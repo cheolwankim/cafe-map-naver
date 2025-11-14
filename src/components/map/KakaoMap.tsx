@@ -10,10 +10,17 @@ type KakaoMapProps = {
   onSelectPlace?: (placeId: string) => void;
 };
 
+type MarkerEntry = {
+  placeId: string;
+  marker: any;
+  position: any;
+};
+
 /**
  * 중앙 영역에 표시되는 카카오 지도 컴포넌트
- * - 최초 마운트 시 Kakao Maps JS SDK 스크립트를 로드하고 지도 생성
- * - places가 변경될 때마다 마커를 다시 찍고, bounds를 재계산
+ * - SDK 로드 + 지도 생성
+ * - places 변경 시 마커 재생성
+ * - 리스트/마커 선택 시 지도 중심 이동 + 인포윈도우 표시
  */
 export default function KakaoMap({
   places,
@@ -22,7 +29,7 @@ export default function KakaoMap({
 }: KakaoMapProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any | null>(null);
-  const markersRef = useRef<any[]>([]);
+  const markersRef = useRef<MarkerEntry[]>([]);
   const infoWindowRef = useRef<any | null>(null);
 
   // 1) SDK 로드 + 지도 생성
@@ -97,21 +104,16 @@ export default function KakaoMap({
     };
 
     document.head.appendChild(script);
-
-    return () => {
-      // SDK는 한 번만 쓰고, SPA 구조에서는 보통 그대로 둡니다.
-      // script.remove(); 는 필요하면 나중에 고려
-    };
   }, []);
 
-  // 2) places / selectedPlaceId 변경 시 마커 재생성
+  // 2) places 변경 시 마커 재생성
   useEffect(() => {
     const kakao = (window as any).kakao;
     const map = mapInstanceRef.current;
     if (!kakao?.maps || !map) return;
 
     // 기존 마커 제거
-    markersRef.current.forEach((marker) => marker.setMap(null));
+    markersRef.current.forEach((entry) => entry.marker.setMap(null));
     markersRef.current = [];
 
     if (!places.length) return;
@@ -129,7 +131,8 @@ export default function KakaoMap({
         map,
       });
 
-      markersRef.current.push(marker);
+      const entry: MarkerEntry = { placeId: place.id, marker, position };
+      markersRef.current.push(entry);
       bounds.extend(position);
 
       kakao.maps.event.addListener(marker, "click", () => {
@@ -145,7 +148,34 @@ export default function KakaoMap({
     });
 
     map.setBounds(bounds);
-  }, [places, selectedPlaceId, onSelectPlace]);
+  }, [places, onSelectPlace]);
+
+  // 3) selectedPlaceId 변경 시 해당 마커로 이동 + 인포윈도우 열기
+  useEffect(() => {
+    if (!selectedPlaceId) return;
+
+    const kakao = (window as any).kakao;
+    const map = mapInstanceRef.current;
+    if (!kakao?.maps || !map) return;
+
+    const entry = markersRef.current.find(
+      (m) => m.placeId === selectedPlaceId,
+    );
+    if (!entry) return;
+
+    map.panTo(entry.position);
+
+    if (!infoWindowRef.current) {
+      infoWindowRef.current = new kakao.maps.InfoWindow({ zIndex: 1 });
+    }
+
+    const place = places.find((p) => p.id === selectedPlaceId);
+    const title = place?.place_name ?? "";
+
+    const content = `<div style="padding:6px 8px;font-size:12px;">${title}</div>`;
+    infoWindowRef.current.setContent(content);
+    infoWindowRef.current.open(map, entry.marker);
+  }, [selectedPlaceId, places]);
 
   return <div ref={mapContainerRef} className="h-full w-full" />;
 }
