@@ -9,8 +9,7 @@
 
 ## 배포 주소
 
-- **Frontend (Vercel)** https://your-vercel-url.vercel.app  
-  (배포 완료 후 실제 URL로 교체)
+- **Frontend (Vercel)** https://cafe-map-naver.vercel.app/  
 
 <br>
 
