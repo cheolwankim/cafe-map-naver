@@ -52,9 +52,11 @@
 
 <img width="1437" height="808" alt="Image" src="https://github.com/user-attachments/assets/16b94b4b-e00a-4541-86ae-d3856322589c" />
 
-기본 화면 (3단 레이아웃)
-검색 결과 리스트 + 지도
-선택된 장소 상세 정보 패널
+<br>
+
+- 기본 화면 (3단 레이아웃)
+- 검색 결과 리스트 + 지도
+- 선택된 장소 상세 정보 패널
 
 <br>
 
