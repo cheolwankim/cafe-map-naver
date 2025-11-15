@@ -1,72 +1,75 @@
-Cafe Map – 카카오 지도 기반 카페·음식점 검색 서비스
+# Cafe Map – 카카오 지도 기반 카페·음식점 검색 서비스
 
-Next.js + TypeScript + Kakao Maps + Kakao Local API 기반의 실전형 지도 검색 서비스입니다.
-키워드 검색을 통해 카페·음식점을 조회하고 지도·리스트·상세정보가 연동되는 직관적인 UX를 제공합니다.
-
-<br>
-배포 주소
-
-Frontend (Vercel) https://your-vercel-url.추후수정
-
-(배포 완료되면 실제 URL로 교체)
+> Next.js + TypeScript + Kakao Maps + Kakao Local API 기반의 **실전형 지도 검색 서비스**입니다.  
+> 키워드 검색을 통해 카페·음식점을 조회하고 지도·리스트·상세정보가 연동되는 직관적인 UX를 제공합니다.
 
 <br>
-사용 기술
-영역	기술 스택
-프론트엔드	Next.js(App Router), TypeScript, Tailwind CSS
-지도/외부 API	Kakao Maps JavaScript SDK, Kakao Local API (keywordSearch)
-배포	Vercel
-기타	전역 타입 선언(global.d.ts), 환경 변수 관리, 반응형 레이아웃 기획(진행 중)
-<br>
-주요 기능 요약
 
-Kakao Local API 기반 키워드 장소 검색
+---
 
-카페(CE7) / 음식점(FD6) 카테고리 필터링 자동 적용
+## 배포 주소
 
-검색 결과를 좌측 리스트 + 중앙 지도 + 우측 상세 패널로 구성
-
-지도에 마커 표시 및 클릭 시:
-
-InfoWindow 표시
-
-리스트 선택 상태 연동
-
-오른쪽 상세 패널 업데이트
-
-리스트 클릭 시:
-
-지도 중심 이동(panTo)
-
-해당 마커 강조
-
-InfoWindow 표시
-
-장소 상세 정보 제공:
-
-이름 / 카테고리 / 주소 / 전화번호 / 카카오맵 링크
+- **Frontend (Vercel)** https://your-vercel-url.vercel.app  
+  (배포 완료 후 실제 URL로 교체)
 
 <br>
-주요 화면
 
-(이미지 준비되면 아래에 넣으세요)
+---
+
+## 사용 기술
+
+| 영역        | 기술 스택                                                                 |
+|-------------|---------------------------------------------------------------------------|
+| 프론트엔드  | Next.js(App Router), TypeScript, Tailwind CSS                            |
+| 지도/외부 API | Kakao Maps JavaScript SDK, Kakao Local API (keywordSearch)               |
+| 배포        | Vercel                                                                    |
+| 기타        | 전역 타입 선언(global.d.ts), 환경 변수 관리, 3단 레이아웃(AppShell) 설계 |
+
+<br>
+
+---
+
+## 주요 기능 요약
+
+- Kakao Local API 기반 **키워드 장소 검색**
+- 카페(CE7) / 음식점(FD6) **카테고리 필터링 자동 적용**
+- 검색 결과를 **좌측 리스트 + 중앙 지도 + 우측 상세 패널**로 구성
+- 지도에 마커 표시 및 클릭 시:
+  - InfoWindow 표시
+  - 리스트 선택 상태 연동
+  - 오른쪽 상세 패널 업데이트
+- 리스트 클릭 시:
+  - 지도 중심 이동(panTo)
+  - 해당 마커 강조
+  - InfoWindow 표시
+- 장소 상세 정보 제공:
+  - 이름 / 카테고리 / 주소 / 전화번호 / 카카오맵 링크
+
+<br>
+
+---
+
+## 주요 화면
+
+(이미지 준비되면 아래에 추가)
+
 
 <img src="URL" width="800" />
 
-
-예시 항목:
-
 기본 화면 (3단 레이아웃)
-
-검색한 장소 리스트
-
-지도 마커와 InfoWindow
-
-우측 상세 정보 패널
+검색 결과 리스트 + 지도
+선택된 장소 상세 정보 패널
 
 <br>
-📁 폴더 구조
+
+---
+
+
+## 폴더 구조
 프론트엔드 (Next.js)
+
+```html
+
 cafe-map/
 ├── src/
 │   ├── app/
@@ -88,99 +91,85 @@ cafe-map/
 ├── .env.local                   # NEXT_PUBLIC_KAKAO_MAP_KEY 설정
 └── package.json
 
+```
+
 <br>
-🔧 환경변수 설정
+
+---
+
+## 환경변수 설정
 .env.local
+```
 NEXT_PUBLIC_KAKAO_MAP_KEY=카카오_JavaScript_키
-
-
-REST API 키가 아니며, 반드시 JavaScript Key여야 합니다.
-
-<br>
-🔌 Kakao Developers 설정
-
-https://developers.kakao.com
- → 애플리케이션 추가
-
-플랫폼 → Web 선택 후 아래 도메인 등록
-
-http://localhost:3000
-
-https://your-vercel-url.vercel.app (배포 후)
-
-Kakao Maps / Local API 서비스 활성화
-
-JavaScript 키 사용
+```
+REST API 키가 아니라 반드시 JavaScript Key를 사용해야 합니다.
 
 <br>
-🛠 구현 상세
-✔ 1) 지도 초기화 및 SDK 동적 로드
 
-Kakao Maps SDK를 <script> 로 자동 로드하지 않고
-autoload=false + window.kakao.maps.load() 방식으로 구현
+---
 
-Next.js 환경에서 hydration 문제 없이 안정적인 구동
+## Kakao Developers 설정  
 
-✔ 2) 마커 렌더링 및 경계 자동 조정
+https://developers.kakao.com  → 애플리케이션 추가
+플랫폼 → Web → 도메인 등록
+ - http://localhost:3000
+ - https://your-vercel-url.vercel.app (배포 후)
+Maps / Local API 서비스 활성화
+JavaScript 키를 .env.local / Vercel 환경변수에 설정
 
-검색 결과마다 지도에 마커 생성
-
-LatLngBounds 로 모든 검색결과가 화면에 보이도록 자동 조절
-
-✔ 3) 리스트 ↔ 지도 완전 연동
-
-리스트 클릭 → 지도 이동 + 인포윈도우 + 상세 패널 업데이트
-
-마커 클릭 → 리스트 선택 상태 동기화
-
-✔ 4) 상세 패널 구성
-
-Kakao Local API 응답 값 기반
-
-place_name
-
-category_group_name / category_name
-
-주소(도로명/지번)
-
-전화번호
-
-place_url (카카오맵 상세 링크)
 
 <br>
-🛠 트러블슈팅
-문제 상황	원인	해결
-지도 스크립트 로드 실패	Vercel 도메인이 Kakao Developers에 등록되지 않음	플랫폼 → Web에 https://*.vercel.app 추가
-“App disabled OPEN_MAP_AND_LOCAL service”	Maps 서비스 미활성화	카카오 Developers > API 관리에서 Maps + Local ON
-window.kakao 타입 오류	TypeScript에서 전역 타입 인식 못함	루트에 global.d.ts 추가하여 declare
-<br>
-✨ 프로젝트 인사이트
 
-Next.js(App Router)와 외부 SDK(Kakao Maps) 연동 경험
+---
 
-CSR 환경에서 안전한 SDK 로드 흐름 이해
 
-지도 마커/InfoWindow/상태 연동 구조 설계
+## 구현 상세
+✔ 지도 초기화 및 SDK 동적 로드
+- Kakao Maps SDK를 <script>로 동적 로드
+- autoload=false + kakao.maps.load() 방식으로 Next.js(App Router) 환경에 맞게 구성
 
-외부 API(Kakao Local) 사용 경험 축적
+✔ 마커 렌더링 및 경계 자동 조정
+- 검색 결과마다 마커 생성
+- LatLngBounds 로 모든 마커가 보이도록 지도 영역 자동 조정
+  
+✔ 리스트 ↔ 지도 완전 연동
+- 리스트 클릭 → 지도 중심 이동 + InfoWindow + 상세 패널 업데이트
+- 마커 클릭 → 리스트 선택 상태 동기화
+  
+✔ 상세 패널 구성
+- Kakao Local API 응답에서 다음 필드 활용:
+ - place_name
+ - category_group_name, category_name
+ - road_address_name, address_name
+ - phone
+ - place_url (카카오맵 상세 페이지)
 
-구조화된 UI 레이아웃(AppShell) 설계 경험
-
-<br>
-📌 면접 대비 핵심 키워드
-
-Next.js(App Router)
-
-TypeScript 전역타입 관리(global.d.ts)
-
-Kakao Maps SDK 동적 로딩
-
-Local API keywordSearch 연동
-
-지도/리스트/상세 패널 상태 동기화
-
-마커 클릭 → 리스트 하이라이트 UX
-
-3단 레이아웃 구조 설계
 
 <br>
+
+---
+
+## 트러블슈팅
+
+| 문제 상황                                          | 원인                         | 해결 방법                                                      |
+| ---------------------------------------------- | -------------------------- | ---------------------------------------------------------- |
+| Kakao SDK 로드 실패                                | 도메인이 Kakao Developers에 미등록 | Kakao Developers → 플랫폼 Web에 localhost / Vercel 도메인 등록      |
+| `"App disabled OPEN_MAP_AND_LOCAL service"` 에러 | Maps / Local 서비스 비활성화      | 애플리케이션 > API 설정에서 Maps / Local 사용 설정                       |
+| TypeScript에서 `window.kakao` 타입 오류              | 전역 타입 미선언                  | 루트에 `global.d.ts` 생성, `interface Window { kakao: any }` 선언 |
+
+<br>
+
+---
+
+
+## 프로젝트를 통해서
+ 
+- Next.js(App Router) + 외부 지도 SDK(Kakao Maps) 연동 경험+
+- CSR 환경에서 안전한 SDK 로딩 순서와 전역 객체 관리 경험+
+- 지도/리스트/상세 패널 구조 설계 및 상태 동기화+
+- 외부 API(Kakao Local) 사용 경험 축적+
+
+<br>
+
+---
+
