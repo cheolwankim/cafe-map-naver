@@ -29,7 +29,7 @@ export function AppShell({ children, left, right }: AppShellProps) {
           </span>
         </div>
         {/* 우측 상단: 로그인/유저 영역 (추후 구현) */}
-        <div className="text-sm text-slate-500">로그인 영역 (TODO)</div>
+        <div className="text-sm text-slate-500"></div>
       </header>
 
       {/* 메인 컨텐츠: 3컬럼 */}
@@ -45,7 +45,7 @@ export function AppShell({ children, left, right }: AppShellProps) {
                 </p>
               </div>
               <div className="flex-1 overflow-y-auto px-4 py-3 text-sm text-slate-600">
-                장소 리스트 영역 (TODO)
+                장소 리스트
               </div>
             </>
           )}
