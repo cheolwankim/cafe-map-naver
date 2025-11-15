@@ -50,10 +50,7 @@
 
 ## 주요 화면
 
-(이미지 준비되면 아래에 추가)
-
-
-<img src="URL" width="800" />
+<img width="1437" height="808" alt="Image" src="https://github.com/user-attachments/assets/16b94b4b-e00a-4541-86ae-d3856322589c" />
 
 기본 화면 (3단 레이아웃)
 검색 결과 리스트 + 지도
